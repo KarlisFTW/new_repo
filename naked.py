@@ -4,15 +4,24 @@ import datetime
 import time
 import yaml
 
+
 from datetime import datetime
+from configparser import ConfigParser
 print('Asteroid processing service')
 
 # Initiating and reading config values
 print('Loading configuration from file')
 
-#Defining Nasa api and location to pull the data from 
-nasa_api_key = "UZc1C1fQcsIt1Al9FZL0BDjcEUJGGLRfZaP4XOff"
-nasa_api_url = "https://api.nasa.gov/neo/"
+try:
+    config = ConfigParser()
+    config.read('config.ini')
+
+    nasa_api_key = config.get('nasa', 'api_key')
+    nasa_api_url = config.get('nasa', 'api_url')
+
+except:
+    logger.exception('')
+print('DONE')
 
 # Getting todays date
 dt = datetime.now()
