@@ -10,7 +10,7 @@ print('Asteroid processing service')
 # Initiating and reading config values
 print('Loading configuration from file')
 
-# 
+#Defining Nasa api and location to pull the data from 
 nasa_api_key = "UZc1C1fQcsIt1Al9FZL0BDjcEUJGGLRfZaP4XOff"
 nasa_api_url = "https://api.nasa.gov/neo/"
 
@@ -19,25 +19,27 @@ dt = datetime.now()
 request_date = str(dt.year) + "-" + str(dt.month).zfill(2) + "-" + str(dt.day).zfill(2)  
 print("Generated today's date: " + str(request_date))
 
-
+#Requestin info from Nasa
 print("Request url: " + str(nasa_api_url + "rest/v1/feed?start_date=" + request_date + "&end_date=" + request_date + "&api_key=" + nasa_api_key))
 r = requests.get(nasa_api_url + "rest/v1/feed?start_date=" + request_date + "&end_date=" + request_date + "&api_key=" + nasa_api_key)
 
+#Printing request response data
 print("Response status code: " + str(r.status_code))
 print("Response headers: " + str(r.headers))
 print("Response content: " + str(r.text))
 
+#if api service is alive then proceed further 
 if r.status_code == 200:
 
 	json_data = json.loads(r.text)
 
 	ast_safe = []
 	ast_hazardous = []
-
+	#count all available asteroids from the api repo
 	if 'element_count' in json_data:
 		ast_count = int(json_data['element_count'])
 		print("Asteroid count today: " + str(ast_count))
-
+		#if asteroid exist then further check each asteroids type, size, danger level, distance from earth etc.
 		if ast_count > 0:
 			for val in json_data['near_earth_objects'][request_date]:
 				if 'name' and 'nasa_jpl_url' and 'estimated_diameter' and 'is_potentially_hazardous_asteroid' and 'close_approach_data' in val:
@@ -55,7 +57,7 @@ if r.status_code == 200:
 						tmp_ast_diam_max = -1
 
 					tmp_ast_hazardous = val['is_potentially_hazardous_asteroid']
-
+					#calculate if an dangerous asteroid is flying near earths atmosphere
 					if len(val['close_approach_data']) > 0:
 						if 'epoch_date_close_approach' and 'relative_velocity' and 'miss_distance' in val['close_approach_data'][0]:
 							tmp_ast_close_appr_ts = int(val['close_approach_data'][0]['epoch_date_close_approach']/1000)
@@ -93,7 +95,7 @@ if r.status_code == 200:
 						ast_hazardous.append([tmp_ast_name, tmp_ast_nasa_jpl_url, tmp_ast_diam_min, tmp_ast_diam_max, tmp_ast_close_appr_ts, tmp_ast_close_appr_dt_utc, tmp_ast_close_appr_dt, tmp_ast_speed, tmp_ast_miss_dist])
 					else:
 						ast_safe.append([tmp_ast_name, tmp_ast_nasa_jpl_url, tmp_ast_diam_min, tmp_ast_diam_max, tmp_ast_close_appr_ts, tmp_ast_close_appr_dt_utc, tmp_ast_close_appr_dt, tmp_ast_speed, tmp_ast_miss_dist])
-
+			
 		else:
 			print("No asteroids are going to hit earth today")
 
