@@ -47,11 +47,7 @@ def mysql_insert_ast_into_db(create_date, hazardous, name, url, diam_min, diam_m
 	cursor = get_cursor()
 	try:
 		cursor = connection.cursor()
-		result  = cursor.execute( "INSERT INTO `ast_daily` (`create_date`, `hazardous`, `name`, `url`, `diam_min`,
- `diam_max`, `ts`, `dt_utc`, `dt_local`, `speed`, `distance`, `ast_id`) VALUES ('" + str(create_date) + "',
- '" + str(hazardous) + "', '" + str(name) + "', '" + str(url) + "', '" + str(diam_min) + "',
- '" + str(diam_max) + "', '" + str(ts) + "', '" + str(dt_utc) + "', '" + str(dt_local) + "',
- '" + str(speed) + "', '" + str(distance) + "', '" + str(ast_id) + "')")
+		result  = cursor.execute( "INSERT INTO `ast_daily` (`create_date`, `hazardous`, `name`, `url`, `diam_min`, `diam_max`, `ts`, `dt_utc`, `dt_local`, `speed`, `distance`, `ast_id`) VALUES ('" + str(create_date) + "', '" + str(hazardous) + "', '" + str(name) + "', '" + str(url) + "', '" + str(diam_min) + "', '" + str(diam_max) + "', '" + str(ts) + "', '" + str(dt_utc) + "', '" + str(dt_local) + "', '" + str(speed) + "', '" + str(distance) + "', '" + str(ast_id) + "')")
 
 
 		connection.commit()
@@ -86,8 +82,8 @@ def sort_ast_by_pass_dist(ast_arr):
 		return []
 
 def sort_ast_by_time(ast_arr):
-	ast_hazardous.sort(key = lambda x: x[4], reverse=False)
-	return ast_hazardous
+	ast_arr.sort(key = lambda x: x[4], reverse=False)
+	return ast_arr
 
 if __name__ == "__main__":
 
