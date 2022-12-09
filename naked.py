@@ -139,6 +139,7 @@ if __name__ == "__main__":
         ast_hazardous = []
 	#count all available asteroids from the api repo
         if 'element_count' in json_data:
+                logger.info("element_count exists in json_data")
                 ast_count = int(json_data['element_count'])
                 logger.info("Asteroid count today: " + str(ast_count))
 
