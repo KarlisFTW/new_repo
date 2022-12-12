@@ -146,6 +146,7 @@ if __name__ == "__main__":
 		#if asteroid exist then further check each asteroids type, size, danger level, distance from earth etc.
                 if ast_count > 0:
                         for val in json_data['near_earth_objects'][request_date]:
+                                #if val contains these elements then assigned them to temp variables
                                 if 'name' and 'nasa_jpl_url' and 'estimated_diameter' and 'is_potentially_hazardous_asteroid' and 'close_approach_data' in val:
                                         tmp_ast_id = val['id']
                                         tmp_ast_name = val['name']
